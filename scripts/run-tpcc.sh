@@ -31,7 +31,7 @@ hash_ratio=100
 #################################################################
 
 make clean
-make CFLAGS="-DENABLE_WAIT_DIE_CC"
+make CFLAGS="-DENABLE_WAIT_DIE_CC" trireme CC=clang
 
 for core in ${cores[@]}; do
     for trial in $(seq 1 1 ${max_trials}); do
@@ -52,7 +52,7 @@ done
 #################################################################
 
 make clean
-make "CFLAGS=-DSHARED_NOTHING -DPTHREAD_SPINLOCK"
+make CFLAGS="-DSHARED_NOTHING -DPTHREAD_SPINLOCK" trireme CC=clang
 
 for core in ${cores[@]}; do
     for trial in $(seq 1 1 ${max_trials}); do
@@ -73,7 +73,7 @@ done
 #################################################################
 
 make clean
-make "CFLAGS=-DSHARED_EVERYTHING -DSE_LATCH -DPTHREAD_SPINLOCK -DENABLE_WAIT_DIE_CC "
+make CFLAGS="-DSHARED_EVERYTHING -DSE_LATCH -DPTHREAD_SPINLOCK -DENABLE_WAIT_DIE_CC " trireme CC=clang
 
 for core in ${cores[@]}; do
     for trial in $(seq 1 1 ${max_trials}); do

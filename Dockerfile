@@ -46,8 +46,11 @@ RUN git config --global user.name "Trireme Docker"
 
 RUN git clone https://github.com/epfl-dias/trireme.git
 WORKDIR trireme
-COPY --chown=trireme:trireme scripts/run-tpcc.sh /home/trireme/trireme/
+COPY --chown=trireme:trireme patches/fix1.patch .
+RUN patch < fix1.patch
+COPY --chown=trireme:trireme scripts/run-tpcc.sh .
 RUN chmod 0755 /home/trireme/trireme/run-tpcc.sh .
-#RUN make CFLAGS="-DENABLE_WAIT_DIE_CC"
+RUN make clean ; make CFLAGS=-DENABLE_WAIT_DIE_CC trireme CC=clang
+#RUN ./run-tpcc.sh
 
 CMD /bin/bash
