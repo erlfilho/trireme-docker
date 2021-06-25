@@ -32,25 +32,18 @@ RUN apt-get install -y --no-install-recommends \
         wget
 
 RUN useradd -m -G sudo -s /bin/bash trireme && echo "trireme:trireme" | chpasswd
-
-USER root
-WORKDIR /root/
 RUN echo "%sudo   ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 USER trireme
 WORKDIR /home/trireme
 
-# Trireme requires git to download llvm during build.
-RUN git config --global user.email "you@example.com"
-RUN git config --global user.name "Trireme Docker"
-
 RUN git clone https://github.com/epfl-dias/trireme.git
 WORKDIR trireme
 COPY --chown=trireme:trireme patches/fix1.patch .
 RUN patch < fix1.patch
+
 COPY --chown=trireme:trireme scripts/run-tpcc.sh .
 RUN chmod 0755 /home/trireme/trireme/run-tpcc.sh .
-RUN make clean ; make CFLAGS=-DENABLE_WAIT_DIE_CC trireme CC=clang
-#RUN ./run-tpcc.sh
+RUN ./run-tpcc.sh
 
 CMD /bin/bash
