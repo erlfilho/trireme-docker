@@ -1,0 +1,30 @@
+From cdeb25c0e6b0dc6c8fdaf2ef4d09c6e5da59cec8 Mon Sep 17 00:00:00 2001
+From: Edson Lucas <edson.lucas@uni-passau.de>
+Date: Mon, 28 Jun 2021 15:10:09 +0200
+Subject: [PATCH] fix: begin node's name with valid macro identifier
+
+Trireme Makefile uses the node name (uname -n) as a macro identifier.
+Since Docker containers are named with numbers at the begging, they
+generate invalid macro identifiers, consequently, breaking the build.
+This patch adds a default "NODE_" at the beggining to avoid invalid
+identifiers.
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 435064b..66e85de 100644
+--- a/Makefile
++++ b/Makefile
+@@ -11,7 +11,7 @@ BUILD_DIR	?= ${PROJECT_DIR}/build
+ 
+ CMAKE		?= cmake
+ 
+-PLATFORM = $(shell uname -n | tr a-z A-Z)
++PLATFORM = NODE_$(shell uname -n | tr a-z A-Z)
+ CC	:= ${INSTALL_DIR}/bin/clang
+ 
+ .SUFFIXES: .o .c .h
+-- 
+2.32.0
+
