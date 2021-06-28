@@ -39,8 +39,8 @@ WORKDIR /home/trireme
 
 RUN git clone https://github.com/epfl-dias/trireme.git
 WORKDIR trireme
-COPY --chown=trireme:trireme patches/fix1.patch .
-RUN patch < fix1.patch
+COPY --chown=trireme:trireme patches/ patches
+RUN /bin/sh -c 'for i in patches/* ; do patch < $i ;done'
 
 COPY --chown=trireme:trireme scripts/run-tpcc.sh .
 RUN chmod 0755 /home/trireme/trireme/run-tpcc.sh .
