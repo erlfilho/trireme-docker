@@ -19,7 +19,7 @@
 # -v stats verbosity (0/1 log of access counts
 # -w hash insert ratio over total number of queries
 
-cores=( 4 2 1 )
+cores=( 64 32 16 8 4 2 1 )
 max_trials=1
 
 iterations=1000000
@@ -31,7 +31,7 @@ hash_ratio=100
 #################################################################
 
 make clean
-make CFLAGS="-DENABLE_WAIT_DIE_CC" trireme CC=clang
+make CFLAGS="-DENABLE_WAIT_DIE_CC" CC=clang trireme
 
 for core in ${cores[@]}; do
     for trial in $(seq 1 1 ${max_trials}); do
